@@ -1,0 +1,19 @@
+html {
+  overflow: hidden;
+}
+
+#img {
+  display: block;
+  margin: auto;
+  height: 128px;
+  width: 128px;
+  padding: 2rem;
+}
+
+#canvas {
+  display: block;
+  margin: 2rem auto;
+  width: 500px;
+  height: 500px;
+  cursor: pointer;
+}
