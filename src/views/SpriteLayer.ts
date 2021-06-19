@@ -17,7 +17,7 @@ export class SpriteLayer extends Layer {
       ctx.drawImage(sprite, 0, 0);
     }
 
-    sprite.src = '/sprite.png';
+    sprite.src = './sprite.png';
   }
 
   draw(ctx) {

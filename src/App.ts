@@ -8,6 +8,9 @@ import { FlagsLayer } from "./views/FlagsLayer";
 import { Game } from "./Game";
 import { SpriteLayer } from "./views/SpriteLayer";
 
+const MAX_BOMBS_COUNT = 16777216; // Set<number> memory limit
+const MAX_SIZE = 65536; // 2**16 hash limit
+
 export class App {
 
   private state = container.get(State);
@@ -19,18 +22,24 @@ export class App {
     const urlParams = new URLSearchParams(location.search);
 
     if (urlParams.get('width')) {
-      this.state.width = +(urlParams.get('width') || 100);
-      document.querySelector('#width').value = urlParams.get('width') || '100';
+      const width = Math.min(MAX_SIZE, +(urlParams.get('width') || 100));
+
+      this.state.width = width;
+      document.querySelector('#width').value = width;
     }
 
     if (urlParams.get('height')) {
-      this.state.height = +(urlParams.get('height') || 100);
-      document.querySelector('#height').value = urlParams.get('height') || '100';
+      const height = Math.min(MAX_SIZE, +(urlParams.get('height') || 100));
+      
+      this.state.height = height;
+      document.querySelector('#height').value = height;
     }
 
     if (urlParams.get('bombs')) {
-      this.state.bombsCount = +(urlParams.get('bombs') || 1000);
-      document.querySelector('#bombs').value = urlParams.get('bombs') || '1000';
+      const bombsCount = Math.min(MAX_BOMBS_COUNT, +(urlParams.get('bombs') || 1000));
+
+      this.state.bombsCount = bombsCount;
+      document.querySelector('#bombs').value = bombsCount;
     }
 
     const gridLayer = container.get(GridLayer);

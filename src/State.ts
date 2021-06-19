@@ -15,7 +15,18 @@ export class State {
   isLost = false;
 
   flags = new Set<string>();
-  bombs = new Set<string>();
+  bombs = new Set<number>();
   opened = new Map<string, number>();
-  visited = new Set<string>();
+
+  addBomb(x: number, y: number) {
+    const hash = (x << 16) + y;
+
+    this.bombs.add(hash);
+  }
+
+  hasBomb(x: number, y: number): boolean {
+    const hash = (x << 16) + y;
+
+    return this.bombs.has(hash);
+  }
 }

@@ -8,10 +8,8 @@ export class Game {
   private state = container.get(State);
   private flagsLayer = container.get(FlagsLayer);
 
-  private lastClick = [0, 0];
-
   private checkCell(left: number, top: number): number {    
-    if (this.state.bombs.has(`${left}.${top}`)) {
+    if (this.state.hasBomb(left, top)) {
       return - 1;
     }
 
@@ -58,7 +56,7 @@ export class Game {
         continue;
       }
 
-      if (this.state.bombs.has(`${newX}.${newY}`)) {
+      if (this.state.hasBomb(newX, newY)) {
         continue;
       }
 
@@ -87,13 +85,13 @@ export class Game {
         continue;
       }
 
-      if (this.state.bombs.has(`${x}.${y}`)) {
+      if (this.state.hasBomb(x ,y)) {
         continue;
       }
 
       bombsLeft--;
 
-      this.state.bombs.add(`${x}.${y}`);
+      this.state.addBomb(x, y);
     }
 
     setTimeout(() => {
@@ -104,15 +102,13 @@ export class Game {
   }
 
   leftClick(left: number, top: number) {
-    this.lastClick = [left, top];
-
     if (this.state.isFirstClick) {
       this.generateBombs(left, top);
 
       this.state.isFirstClick = false;
     }
 
-    if (this.state.bombs.has(`${left}.${top}`)) {
+    if (this.state.hasBomb(left, top)) {
       console.log('BOOOM', left, top);
       this.state.isLost = true;
     } else {
@@ -123,8 +119,6 @@ export class Game {
       this.flagsLayer.drawNewEmpty(left, top, cell);
 
       this.traverseNeighbours(left, top);
-
-      this.state.visited.clear();
     }
   }
 
@@ -136,7 +130,7 @@ export class Game {
     if (this.state.flags.has(`${left}.${top}`)) {
       this.state.flags.delete(`${left}.${top}`)
 
-      if (this.state.bombs.has(`${left}.${top}`)) {
+      if (this.state.hasBomb(left, top)) {
         this.flagsLayer.drawNewBomb(left, top);
       } else {
         this.flagsLayer.drawClearCell(left, top);
